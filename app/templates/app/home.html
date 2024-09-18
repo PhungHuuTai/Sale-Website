@@ -52,90 +52,21 @@
 {% endblock banner-slider %}
 
 {% block main-content %}
-<div class="row">
+<div class="row" style="width:100%">
+    {% for pro in products %}
     <div class="col-lg-3">
-        <img src="{% static 'app/images/cow-ghee.png' %}" class="thumbnail">
+        <img src="{{ pro.ImgUrl }}" class="thumbnail">
         <div class="box-element product">
-            <h6><strong>Cow Ghee</strong></h6>
+            <h6><strong>{{ pro.name }}</strong></h6>
             <hr>
-            <button class="btn btn-outline-secondary add-btn">Add to cart</button>
+            <button data-product={{pro.id}} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to cart</button>
             <a href="#" class="btn btn-outline-success">View</a>
-            <h4 style="display: inline-block; float: right"><strong>200.000 VND</strong></h4>
+            <h4 style="display: inline-block; float: right"><strong>${{ pro.price | floatformat:2 }}</strong></h4>
         </div>
     </div>
-    <div class="col-lg-3">
-        <img src="{% static 'app/images/buffalo-ghee.png' %}" class="thumbnail">
-        <div class="box-element product">
-            <h6><strong>Buffalo Ghee</strong></h6>
-            <hr>
-            <button class="btn btn-outline-secondary add-btn">Add to cart</button>
-            <a href="#" class="btn btn-outline-success">View</a>
-            <h4 style="display: inline-block; float: right"><strong>300.000 VND</strong></h4>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <img src="{% static 'app/images/cow-milk.png' %}" class="thumbnail">
-        <div class="box-element product">
-            <h6><strong>Cow Milk</strong></h6>
-            <hr>
-            <button class="btn btn-outline-secondary add-btn">Add to cart</button>
-            <a href="#" class="btn btn-outline-success">View</a>
-            <h4 style="display: inline-block; float: right"><strong>150.000 VND</strong></h4>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <img src="{% static 'app/images/fullcream-milk.png' %}" class="thumbnail">
-        <div class="box-element product">
-            <h6><strong>Fullcream milk</strong></h6>
-            <hr>
-            <button class="btn btn-outline-secondary add-btn">Add to cart</button>
-            <a href="#" class="btn btn-outline-success">View</a>
-            <h4 style="display: inline-block; float: right"><strong>250.000 VND</strong></h4>
-        </div>
-    </div>
+    {% endfor %}
 </div>
-<div class="row">
-    <div class="col-lg-3">
-        <img src="{% static 'app/images/curd-premium.png' %}" class="thumbnail">
-        <div class="box-element product">
-            <h6><strong>Curd premium</strong></h6>
-            <hr>
-            <button class="btn btn-outline-secondary add-btn">Add to cart</button>
-            <a href="#" class="btn btn-outline-success">View</a>
-            <h4 style="display: inline-block; float: right"><strong>200.000 VND</strong></h4>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <img src="{% static 'app/images/curd-total.png' %}" class="thumbnail">
-        <div class="box-element product">
-            <h6><strong>Curd total</strong></h6>
-            <hr>
-            <button class="btn btn-outline-secondary add-btn">Add to cart</button>
-            <a href="#" class="btn btn-outline-success">View</a>
-            <h4 style="display: inline-block; float: right"><strong>300.000 VND</strong></h4>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <img src="{% static 'app/images/dbtoned-milk.png' %}" class="thumbnail">
-        <div class="box-element product">
-            <h6><strong>Dbtoned Milk</strong></h6>
-            <hr>
-            <button class="btn btn-outline-secondary add-btn">Add to cart</button>
-            <a href="#" class="btn btn-outline-success">View</a>
-            <h4 style="display: inline-block; float: right"><strong>150.000 VND</strong></h4>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <img src="{% static 'app/images/icbars.png' %}" class="thumbnail">
-        <div class="box-element product">
-            <h6><strong>Icbars</strong></h6>
-            <hr>
-            <button class="btn btn-outline-secondary add-btn">Add to cart</button>
-            <a href="#" class="btn btn-outline-success">View</a>
-            <h4 style="display: inline-block; float: right"><strong>250.000 VND</strong></h4>
-        </div>
-    </div>
-</div>
-<br>
-<br>
+<br />
+<br />
+<br />
 {% endblock main-content %}

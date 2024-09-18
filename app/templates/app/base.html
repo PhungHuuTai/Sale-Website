@@ -26,6 +26,25 @@
     <script src="{% static 'app/js/all.min.js' %}"></script>
     <script src="{% static 'app/js/myscript.js' %}"></script>
     <script src="{% static 'app/js/owl.carousel.min.js' %}"></script>
+    <script type="text/javascript">
+        let user = '{{request.user}}'
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+    </script>
 
     <title>Online sales website</title>
     <meta name="description" content="">
@@ -56,10 +75,10 @@
                             Product
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Milk</a></li>
-                            <li><a class="dropdown-item" href="#">Cosmetics</a></li>
-                            <li><a class="dropdown-item" href="#">Clothes</a></li>
-                            <li><a class="dropdown-item" href="#">Shoes</a></li>
+                            {% for category in categories %}
+                            <li><a class="dropdown-item"
+                                    href="{% url 'category' %}?category={{category.slug}}">{{category.name}}</a></li>
+                            {% endfor %}
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -69,33 +88,38 @@
                         <a class="nav-link" href="#">Contact</a>
                     </li>
                 </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="d-flex" role="search" method="POST" action="{% url 'search' %}">
+                    {% csrf_token %}
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                        name="search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        User
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Home page</a></li>
-                        <li><a class="dropdown-item" href="#">Order</a></li>
-                        <li><a class="dropdown-item" href="#">Exit</a></li>
-                    </ul>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <span class="nav-link">{{ user.username }}</span>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cart' %}">Shopping cart</a>
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Log in</a>
+                    <a class="nav-link" href="{% url 'register' %}">Signup</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Sign up</a>
-                </li>
+                {% endif %}
             </ul>
+            <div class="form-inline my-2 my-lg-0">
+                <a href="{% url 'cart' %}">
+                    <img id="cart-icon" src="{% static 'app/images/cart.png' %}">
+                </a>
+            </div>
+            <div>
+                <p id="cart-total">{{cartItem}}</p>
+            </div>
         </div>
     </nav>
 
@@ -104,11 +128,15 @@
     {% block main-content %} {% endblock main-content %}
     {% block cart-content %} {% endblock cart-content %}
     {% block checkout-content %} {% endblock checkout-content %}
+    {% block register %} {% endblock register %}
+    {% block login %} {% endblock login %}
+    {% block search %} {% endblock search %}
 
     <!-- Footer -->
     <footer class="container-fluid bg-success text-center fixed-bottom p-2 mt-5">
         copyright 2024
     </footer>
+    <script src="{% static 'app/js/cart.js' %}"></script>
 </body>
 
 </html>
